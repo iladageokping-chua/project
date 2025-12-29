@@ -1,0 +1,362 @@
+/* src/App.css */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h2 {
+    color: #333;
+    text-align: center;
+}
+
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    /* Adjusted justify-content */
+}
+
+.product {
+    flex: 0 1 calc(30% - 20px);
+    /* Adjusted flex and width */
+    margin: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+    max-width: calc(30% - 20px);
+    /* Adjusted max-width */
+}
+
+.product:hover {
+    transform: scale(1.05);
+}
+
+.product-image {
+    overflow: hidden;
+    height: 200px;
+    position: relative;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+}
+
+.product:hover .product-image img {
+    transform: scale(1.2);
+}
+
+.product-details {
+    padding: 15px;
+    text-align: center;
+}
+
+.product button {
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.product button:hover {
+    background-color: #45a049;
+}
+
+.product-details {
+    padding: 15px;
+    text-align: center;
+}
+
+.product button {
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.product button:hover {
+    background-color: #45a049;
+}
+
+h2#product_style {
+    padding-top: 4.23%;
+}
+
+/* Updated styling for the tab bar */
+.tab-bar {
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    /* Adjusted to space between */
+    background-color: #343a40;
+    /* Dark background color */
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.tab-bar .left-buttons,
+.tab-bar .right-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.tab-bar .right-buttons {
+    margin-left: auto;
+    /* Push to the right */
+}
+
+.tab-bar li {
+    margin: 0 20px;
+}
+
+.tab-bar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.tab-bar a:hover {
+    background-color: #7b7b7b;
+}
+
+.logo {
+    width: 30px;
+    height: auto;
+    margin-right: 5px;
+}
+
+.tab-bar li.home-tab {
+    margin-right: 20px;
+}
+
+.tab-bar ul {
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+.tab-bar li {
+    margin: 0;
+}
+
+.nav-link {
+    color: black;
+}
+
+.nav-link:hover {
+    color: black;
+}
+
+.navbar-brand {
+    color: black;
+}
+
+.navbar-brand:hover {
+    color: black;
+}
+
+.tab-bar {
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Adjust the alpha value for transparency */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    /* Adjust padding as needed */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.tab-item {
+    color: #fff;
+    /* Set text color to white */
+    text-decoration: none;
+    margin-right: 20px;
+    /* Adjust margin as needed */
+}
+
+.tab-item:hover {
+    text-decoration: underline;
+    /* Add underline on hover if desired */
+}
+
+.tab-item:last-child {
+    margin-right: 0;
+}
+
+#product_style {
+    margin-top: 100px;
+    color: white;
+    /* Adjust the margin as needed */
+}
+
+.video-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -1;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(1, 1, 1, 1);
+    /* Increase the alpha value for more darkness */
+    z-index: -1;
+}
+
+.user-info p {
+    color: white;
+    /* เปลี่ยนสีข้อความเป็นสีขาว */
+}
+
+/* ตำแหน่งภาพ sponsor */
+.content .carousel {
+    padding-top: 6%;
+}
+
+/* ตำแหน่งภาพ พวก hi email, ปุ่มlogout */
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-email {
+    margin-top: 15px;
+    margin-right: 15px;
+    /* ปรับระยะห่างระหว่างข้อความและปุ่ม */
+}
+
+.cart-product-image {
+    max-width: 100px;
+    /* ปรับขนาดภาพให้มีความกว้างสูงสุด 100px */
+    max-height: 100px;
+    /* ปรับขนาดภาพให้มีความสูงสูงสุด 100px */
+}
+
+/* Preloader */
+.preloader-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #000;
+    /* เปลี่ยนสีพื้นหลังเป็นสีดำ */
+}
+
+.preloader-text {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #fff;
+    /* เปลี่ยนสีข้อความเป็นสีขาว */
+}
+
+/* CSS for Logo Animation */
+@keyframes logo-animation {
+    0% {
+        transform: translateY(0);
+    }
+
+    25% {
+        transform: translateY(-5px);
+    }
+
+    50% {
+        transform: translateY(0);
+    }
+
+    75% {
+        transform: translateY(5px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.preloader-logo {
+    width: 100px;
+    height: auto;
+    margin-bottom: 1%;
+    animation: logo-animation 1s infinite;
+    /* เพิ่มอนิเมชั่น logo-animation เข้าไปใน preloader-logo */
+}
+
+/* CSS for Dot Animation */
+.dot-loader {
+    display: flex;
+    justify-content: center;
+}
+
+.dot {
+    background-color: #fff;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin: 0 5px;
+    animation: dot-animation 1.5s infinite ease-in-out;
+}
+
+.dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes dot-animation {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.tab-bar {
+    backdrop-filter: blur(8px);
+    /* เพิ่มเบลอให้ Navbar */
+    background-color: rgba(0, 0, 0, 0.8);
+    /* สีพื้นหลังดำทึบ */
+}
+
+#product_style2 {
+    color: white;
+    text-align: center;
+}
