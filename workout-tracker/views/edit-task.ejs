@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Task</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+  <div class="container mx-auto p-6">
+    <div class="bg-white shadow-md rounded-lg p-6 max-w-xl mx-auto">
+      <h1 class="text-2xl font-bold text-gray-700 mb-4">Edit Task</h1>
+      <form action="/edit-task/<%= task.id %>" method="POST">
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium">Title</label>
+          <input type="text" name="name" value="<%= task.name %>" required
+            class="w-full p-2 border rounded-md focus:outline-none focus:ring focus:border-gray-500">
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium">Goal</label>
+          <input type="text" name="goal" value="<%= task.goal %>" required
+            class="w-full p-2 border rounded-md focus:outline-none focus:ring focus:border-gray-500">
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium">Due Date</label>
+          <input type="date" name="date" value="<%= task.date %>" required
+            class="w-full p-2 border rounded-md focus:outline-none focus:ring focus:border-gray-500">
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium">Notes</label>
+          <textarea name="notes" rows="3"
+            class="w-full p-2 border rounded-md focus:outline-none focus:ring focus:border-gray-500"><%= task.notes %></textarea>
+        </div>
+        <div class="flex justify-between">
+          <a href="/list" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Cancel</a>
+          <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workout Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+  <% if (!user) { %>
+    <script>
+      window.location.href = "/";
+    </script>
+  <% } %>
+  
+  <div class="flex h-screen">
+    <!-- Sidebar -->
+    <aside class="w-1/5 bg-white shadow-md p-6 flex flex-col space-y-4">
+      <h2 class="text-xl font-bold text-gray-800">Workout Tracker</h2>
+      <ul class="space-y-2">
+        <li class="p-2 flex items-center space-x-2 sidebar-tab" id="overviewTab">
+            <a href="/workout_tracker" class="flex items-center space-x-2 w-full">
+              <img src="images/overview.png" alt="Logo" class="w-6 h-6">
+              <span>Overview</span>
+            </a>
+        </li>
+        <li class="p-2 bg-gray-200 rounded-md flex items-center space-x-2">
+          <a href="/workout" class="flex items-center space-x-2">
+            <img src="images/gym.png" alt="Logo" class="w-6 h-6"> <span>Workout</span>
+          </a>
+        </li>
+        <li class="hover:bg-gray-200 p-2 rounded-md transition">
+          <a href="/list" class="flex items-center space-x-2">
+            <img src="images/goal.png" alt="Logo" class="w-6 h-6"> <span>Goals</span>
+          </a>
+        </li>
+        <li class="hover:bg-gray-200 p-2 rounded-md transition">
+          <a href="/calendar" class="flex items-center space-x-2">
+            <img src="images/schedule.png" alt="Logo" class="w-6 h-6"> <span>Schedule</span>
+          </a>
+        </li>
+        <li class="p-2 flex items-center space-x-2">
+          <a href="/Goal_Progress" class="flex items-center space-x-2 w-full">
+              <img src="images/progress.png" alt="Logo" class="w-6 h-6">
+              <span>Progress</span>
+          </a>
+      </li>
+      <li class="p-2 flex items-center space-x-2">
+        <a href="/bmi" class="flex items-center space-x-2 w-full">
+            <img src="images/bmi.png" alt="Logo" class="w-6 h-6">
+            <span>BMI</span>
+        </a>
+    </li> 
+      </ul>
+    </aside>
+    
+      <!-- Main Content -->
+    <main class="flex-1 p-6 overflow-y-auto">
+      <header class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold">Workout Guide</h1>
+      </header>
+
+      <section class="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-6 rounded-lg shadow-md mb-6">
+        <h2 class="text-xl font-semibold">Recommended Exercises</h2>
+        <p>Learn the best exercises to achieve your fitness goals.</p>
+      </section>
+
+      <!-- Basic Exercises -->
+      <section class="bg-white p-6 rounded-lg shadow-md mb-6">
+        <h3 class="text-lg font-semibold mb-4">Basic Exercises</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="bg-gray-100 p-4 rounded-lg shadow transform hover:scale-105 hover:shadow-lg transition duration-300">
+            <img src="images/jumpingjacks.jpg" alt="Jumping Jacks" class="w-full h-40 object-cover rounded-md mb-3 hover:opacity-80">
+            <h4 class="font-semibold">Jumping Jacks</h4>
+            <p class="text-sm text-gray-600">Great for warm-ups and cardio fitness.</p>
+          </div>
+          <div class="bg-gray-100 p-4 rounded-lg shadow transform hover:scale-105 hover:shadow-lg transition duration-300">
+            <img src="images/wallsit.jpg" alt="Wall Sit" class="w-full h-40 object-cover rounded-md mb-3 hover:opacity-80">
+            <h4 class="font-semibold">Wall Sit</h4>
+            <p class="text-sm text-gray-600">Strengthens legs and improves endurance.</p>
+          </div>
+          <div class="bg-gray-100 p-4 rounded-lg shadow transform hover:scale-105 hover:shadow-lg transition duration-300">
+            <img src="images/armcircles.jpg" alt="Arm Circles" class="w-full h-40 object-cover rounded-md mb-3 hover:opacity-80">
+            <h4 class="font-semibold">Arm Circles</h4>
+            <p class="text-sm text-gray-600">Enhances shoulder mobility and strength.</p>
+          </div>
+        </div>
+      </section>
+
+     <!-- Full Body Exercises -->
+<section class="bg-white p-6 rounded-lg shadow-md mb-6">
+  <h3 class="text-lg font-semibold mb-4">Full Body Exercises</h3>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="exercise-card">
+      <img src="images/Burpee.jpg" alt="Burpee">
+      <h4>Burpee</h4>
+      <p>A high-intensity exercise working multiple muscle groups.</p>
+    </div>
+    <div class="exercise-card">
+      <img src="images/JumpingSquat.jpg" alt="Jumping Squat">
+      <h4>Jumping Squat</h4>
+      <p>Improves explosive power and burns calories.</p>
+    </div>
+    <div class="exercise-card">
+      <img src="images/HighKnees.jpg" alt="High Knees">
+      <h4>High Knees</h4>
+      <p>Boosts heart rate and enhances endurance.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Back Exercises -->
+<section class="bg-white p-6 rounded-lg shadow-md mb-6">
+  <h3 class="text-lg font-semibold mb-4">Back Exercises</h3>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="exercise-card">
+      <img src="images/pullup.jpg" alt="Pull-up">
+      <h4>Pull-up</h4>
+      <p>Strengthens upper back and arms.</p>
+    </div>
+    <div class="exercise-card">
+      <img src="images/deadlift.jpg" alt="Deadlift">
+      <h4>Deadlift</h4>
+      <p>Builds back and overall strength.</p>
+    </div>
+    <div class="exercise-card">
+      <img src="images/row.jpg" alt="Bent-over Row">
+      <h4>Bent-over Row</h4>
+      <p>Develops back thickness and muscle definition.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Core Exercises -->
+<section class="bg-white p-6 rounded-lg shadow-md mb-6">
+  <h3 class="text-lg font-semibold mb-4">Core Exercises</h3>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="exercise-card">
+      <img src="images/plank.jpg" alt="Plank">
+      <h4>Plank</h4>
+      <p>Improves core stability and endurance.</p>
+    </div>
+    <div class="exercise-card">
+      <img src="images/crunch.jpg" alt="Crunch">
+      <h4>Crunch</h4>
+      <p>Targets upper abdominal muscles.</p>
+    </div>
+    <div class="exercise-card">
+      <img src="images/legraises.jpg" alt="Leg Raises">
+      <h4>Leg Raises</h4>
+      <p>Strengthens lower abs and core.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Arm Exercises -->
+<section class="bg-white p-6 rounded-lg shadow-md mb-6">
+  <h3 class="text-lg font-semibold mb-4">Arm Exercises</h3>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="exercise-card">
+      <img src="images/pushup.jpg" alt="Push-up">
+      <h4>Push-up</h4>
+      <p>Strengthens chest, shoulders, and triceps.</p>
+    </div>
+    <div class="exercise-card">
+      <img src="images/bicepcurl.jpg" alt="Bicep Curl">
+      <h4>Bicep Curl</h4>
+      <p>Targets biceps for arm strength.</p>
+    </div>
+    <div class="exercise-card">
+      <img src="images/TricepDips.jpg" alt="Tricep Dips">
+      <h4>Tricep Dips</h4>
+      <p>Builds triceps and arm endurance.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Leg Exercises -->
+<section class="bg-white p-6 rounded-lg shadow-md mb-6">
+  <h3 class="text-lg font-semibold mb-4">Leg Exercises</h3>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="exercise-card">
+      <img src="images/squat.jpg" alt="Squat">
+      <h4>Squat</h4>
+      <p>Targets legs and glutes for lower body strength.</p>
+    </div>
+    <div class="exercise-card">
+      <img src="images/Lunges.jpg" alt="Lunges">
+      <h4>Lunges</h4>
+      <p>Improves balance and strengthens legs.</p>
+    </div>
+    <div class="exercise-card">
+      <img src="images/LegPress.jpg" alt="Leg Press">
+      <h4>Leg Press</h4>
+      <p>Builds quad and hamstring strength.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .exercise-card {
+    background: #f3f4f6;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .exercise-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  .exercise-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+  }
+  .exercise-card h4 {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-top: 0.5rem;
+  }
+  .exercise-card p {
+    font-size: 0.9rem;
+    color: #4b5563;
+  }
+</style>
+
+
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const workoutForm = document.querySelector("form");
+      const workoutList = document.getElementById("workout-list");
+  
+      function loadWorkouts() {
+        const workouts = JSON.parse(localStorage.getItem("workouts")) || [];
+        workoutList.innerHTML = "";
+        workouts.forEach((workout, index) => {
+          const workoutItem = document.createElement("li");
+          workoutItem.className = "p-2 bg-gray-100 rounded-md flex justify-between items-center shadow";
+          workoutItem.innerHTML = `
+            <span>${workout.type} - ${workout.duration} min (${workout.intensity})</span>
+            <button class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded transition" onclick="deleteWorkout(${index})">Delete</button>
+          `;
+          workoutList.appendChild(workoutItem);
+        });
+      }
+  
+      workoutForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const type = document.getElementById("workoutType").value;
+        const duration = document.getElementById("duration").value;
+        const intensity = document.getElementById("intensity").value;
+  
+        if (!type || !duration) {
+          alert("Please fill all fields!");
+          return;
+        }
+  
+        const workouts = JSON.parse(localStorage.getItem("workouts")) || [];
+        workouts.push({ type, duration, intensity });
+        localStorage.setItem("workouts", JSON.stringify(workouts));
+  
+        workoutForm.reset();
+        loadWorkouts();
+      });
+  
+      window.deleteWorkout = function (index) {
+        const workouts = JSON.parse(localStorage.getItem("workouts")) || [];
+        workouts.splice(index, 1);
+        localStorage.setItem("workouts", JSON.stringify(workouts));
+        loadWorkouts();
+      };
+  
+      loadWorkouts();
+    });
+  </script>
+
+  
+
+
+
+
+</body>
+</html>

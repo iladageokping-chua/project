@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workout Tracker - Goal List</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+  <div class="container mx-auto p-6">
+    <div class="flex items-center justify-between mb-6">
+      <!-- Back Button & Header -->
+      <div class="flex items-center gap-3">
+        <a href="/workout_tracker" 
+          class="flex items-center justify-center bg-gray-200 text-gray-700 w-12 h-12 rounded-xl shadow-lg hover:shadow-md hover:bg-gray-300 transition-all duration-200">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </a>
+        <h1 class="text-2xl font-bold text-gray-700">Your Goals</h1>
+      </div>
+
+      <!-- Add Goal Button -->
+      <a href="/add-task" class="bg-[#333] text-white px-4 py-2 rounded-lg shadow-md hover:bg-gray-700 transition-all duration-200">
+        + Add Goal
+      </a>
+    </div>
+
+    <div class="bg-white shadow-lg rounded-lg p-4">
+      <% if (!tasks || tasks.length === 0) { %>
+        <p class="text-gray-500 text-center">No goals added yet. Please add a goal to get started!</p>
+      <% } else { %>
+        <% tasks.forEach(task => { %>
+          <div class="flex justify-between items-start p-4 border-b">
+            <div>
+              <h2 class="text-lg font-semibold flex items-center gap-2">
+                <span class="inline-block w-3 h-3 rounded-full <%= task.status === 'done' ? 'bg-green-500' : 'bg-red-500' %>"></span>
+                <%= task.name %>
+                <span class="text-sm text-gray-400 ml-2">(<%= task.status === 'done' ? 'Done' : 'Not Done' %>)</span>
+              </h2>
+              <!-- Ensure Test Goal is displayed -->
+              <p class="text-gray-600 mt-1">🎯 Goal: <%= task.goal %></p>
+              <p class="text-gray-500">📅 Due Date: <%= task.date %></p>
+              <% if (task.notes) { %>
+                <p class="text-gray-400 mt-1"><%= task.notes %></p>
+              <% } %>
+            </div>
+            <div class="flex flex-col gap-2 items-end">
+              <form action="/update-status/<%= task.id %>" method="POST">
+                <input type="hidden" name="status" value="<%= task.status === 'done' ? 'not_done' : 'done' %>">
+                <button type="submit" class="text-blue-500 hover:underline">
+                  Mark as <%= task.status === 'done' ? 'Not Done' : 'Done' %>
+                </button>
+              </form>
+              <a href="/edit-task/<%= task.id %>" class="text-yellow-500 hover:underline">Edit</a> <!-- Added Edit button -->
+              <form action="/delete-task/<%= task.id %>" method="POST">
+                <button type="submit" class="text-red-500 hover:underline">Delete</button>
+              </form>
+            </div>
+          </div>
+        <% }) %>
+      <% } %>
+    </div>
+  </div>
+
+  <script>
+    function toggleEditForm(taskId, show) {
+      const form = document.getElementById(`edit-form-${taskId}`);
+      if (form) {
+        form.style.display = show ? 'block' : 'none';
+      }
+    }
+  </script>
+</body>
+</html>

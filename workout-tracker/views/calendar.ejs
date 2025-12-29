@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Workout Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+  <style>
+    .arrow-button {
+      padding: 0.5rem 1rem;
+      background-color: #e2e8f0;
+      border-radius: 0.375rem;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .arrow-button:hover {
+      background-color: #cbd5e0;
+      color: #3b82f6;
+    }
+    .arrow-icon {
+      font-size: 1.25rem;
+      color: #637185;
+      transition: color 0.3s ease;
+    }
+    .arrow-icon:hover {
+      color: #3b82f6;
+    }
+    .selected-date {
+        background-color: #3b82f6 !important;
+        color: white !important;
+        font-weight: bold;
+        /* ลบ border-radius ออก หรือกำหนดใหม่ให้โค้งนิดหน่อยก็ได้ */
+        border-radius: 0.375rem !important; /* หรือจะใช้ 0px ก็ได้ */
+    }
+
+  .calendar-day:hover {
+    background-color: #bfdbfe !important; /* สีฟ้า hover */
+    cursor: pointer;
+  }
+
+  .calendar-day.selected-date {
+    background-color: #3b82f6 !important;
+    color: white !important;
+    font-weight: bold;
+    border-radius: 50%;
+  }
+
+
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-900 bg-cover bg-center" style="background-image: url('/images/workout-bg.jpg');">
+  <!-- Navbar -->
+  <nav class="bg-[#222] text-white p-4 flex items-center justify-between">
+    <a href="/workout_tracker" class="hover:bg-gray-700 p-2 rounded-full transition">
+      <i class="fas fa-chevron-left text-white text-lg"></i>
+    </a>
+    <h1 class="text-2xl font-semibold italic">Workout Tracker</h1>
+    <div class="flex items-center gap-3">
+      <span class="text-lg font-medium"><%= user.username %></span>
+      <a href="/profile" class="w-10 h-10 bg-gray-500 rounded-full flex items-center justify-center hover:bg-gray-700 transition">
+        <i class="fas fa-user text-white text-xl"></i>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Search -->
+  <div class="bg-white shadow-md p-4 mb-2 rounded-lg flex justify-center gap-4">
+    <input type="date" class="border p-2 rounded-lg w-1/3" id="searchDate">
+    <button id="searchBtn" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-700">Search</button>
+  </div>
+
+  <!-- Main -->
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="w-1/5 bg-white p-6 border-r shadow-md min-h-screen">
+      <h2 class="text-2xl font-semibold mb-4">📅 <%= monthName %> <%= year %></h2>
+      <h3 class="text-md font-bold mb-2">Goals on Selected Date</h3>
+      <ul id="goalsForDate" class="space-y-3 text-sm text-gray-700">
+        <li class="text-gray-400">Click a date to see goals</li>
+      </ul>
+    </aside>
+
+    <!-- Calendar -->
+    <section class="w-4/5 p-4">
+      <div class="bg-white shadow-md rounded-lg p-4">
+        <div class="calendar-header">
+          <h1>Calendar for <%= monthName %> <%= year %></h1>
+        </div>
+        <div class="flex justify-between items-center mb-4">
+          <a href="/calendar?month=<%= prevMonth %>&year=<%= prevYear %>" class="arrow-button">
+            <i class="fas fa-chevron-left arrow-icon"></i>
+          </a>
+          <h2 class="text-xl font-semibold"><%= monthName %> <%= year %></h2>
+          <a href="/calendar?month=<%= nextMonth %>&year=<%= nextYear %>" class="arrow-button">
+            <i class="fas fa-chevron-right arrow-icon"></i>
+          </a>
+        </div>
+
+        <!-- Grid -->
+        <div class="grid grid-cols-7 gap-2 text-center text-sm">
+          <div class="font-bold">Sun</div>
+          <div class="font-bold">Mon</div>
+          <div class="font-bold">Tue</div>
+          <div class="font-bold">Wed</div>
+          <div class="font-bold">Thu</div>
+          <div class="font-bold">Fri</div>
+          <div class="font-bold">Sat</div>
+
+          <% for(let i = 0; i < firstDayOfWeek; i++) { %>
+            <div class="text-gray-400 text-xs"></div>
+          <% } %>
+          
+          <% daysInMonth.forEach((day) => { 
+            let dayStr = new Date(Date.UTC(day.getFullYear(), day.getMonth(), day.getDate())).toISOString().split('T')[0]; 
+            let selectedStr = selectedDate ? new Date(selectedDate).toISOString().split('T')[0] : null; 
+            let isSelected = selectedStr === dayStr;
+
+            // Check if the day has tasks
+            let hasTask = allGoals.some(goal => new Date(goal.date).toISOString().split('T')[0] === dayStr);
+          %>
+            <div class="p-4 border rounded-lg hover:bg-blue-100 bg-gray-50 shadow <%= isSelected ? 'selected-date' : '' %> <%= hasTask ? 'has-task' : '' %> calendar-day relative" data-date="<%= dayStr %>">
+              <%= day.getDate() %>
+              <% if (hasTask) { %>
+                <div class="absolute top-1 right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></div>
+              <% } %>
+            </div>
+          <% }); %>          
+        </div>
+    </section>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    const username = "<%= user.username %>";
+    let allGoals = [];
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const searchInput = document.getElementById("searchDate");
+
+      document.getElementById("searchBtn").addEventListener("click", () => {
+        const selectedDate = searchInput.value;
+        if (selectedDate) {
+          const [y, m] = selectedDate.split("-");
+          window.location.href = `/calendar?year=${y}&month=${parseInt(m)}&date=${selectedDate}`;
+        }
+      });
+
+      fetch(`/calendar/goals/${username}`)
+        .then(res => res.json())
+        .then(data => {
+          allGoals = data.goals || [];
+
+          document.querySelectorAll(".calendar-day").forEach(div => {
+            div.addEventListener("click", () => {
+              const dateStr = div.dataset.date;
+
+              // Remove selected-date from previous selection
+              document.querySelectorAll(".calendar-day").forEach(d => d.classList.remove("selected-date"));
+
+              // Add selected-date to clicked date
+              div.classList.add("selected-date");
+
+              // Display goals for the selected date
+              showGoalsForDate(dateStr);
+            });
+          });
+        })
+        .catch(err => {
+          console.error('Failed to load goals:', err);
+          document.getElementById("goalsForDate").innerHTML = '<li class="text-red-500">Failed to load goals</li>';
+        });
+    });
+
+    function showGoalsForDate(dateStr) {
+      const list = document.getElementById("goalsForDate");
+      list.innerHTML = "";
+
+      const goalsForDate = allGoals.filter(g => {
+        const goalDate = new Date(g.date).toISOString().split('T')[0];
+        return goalDate === dateStr;
+      });
+
+      if (goalsForDate.length === 0) {
+        list.innerHTML = `<li class="text-gray-400">No goals for this date</li>`;
+        return;
+      }
+
+      goalsForDate.forEach(goal => {
+        const li = document.createElement("li");
+        li.className = "bg-gray-100 p-3 rounded-md shadow-sm";
+        li.innerHTML = `
+          <div class="font-bold text-gray-800">${goal.name}</div>
+          <div class="text-sm text-gray-600">🎯 ${goal.goal}</div>
+          <div class="text-sm text-gray-500">📝 ${goal.notes || 'No notes'}</div>
+          <div class="text-xs text-gray-400">📅 ${goal.date}</div>
+        `;
+        list.appendChild(li);
+      });
+    }
+  </script>
+
+  <!-- Add closing body and html tags -->
+  </body>
+</html>

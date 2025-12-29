@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Workout Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            height: 100%;
+        }
+        /* Optional: Add minor styling adjustments if needed */
+    </style>
+</head>
+
+<body class="bg-gray-100 font-sans">
+    <% if (!user) { %>
+    <script>
+        // Redirect to login if user data is not available (using EJS variable)
+        window.location.href = "/";
+    </script>
+    <% } %>
+
+    <div class="flex h-screen items-start">
+        <aside class="w-1/5 bg-white shadow-md p-4 h-screen flex flex-col justify-between">
+            <div>
+                <h2 class="text-lg font-bold mb-4">Workout Tracker</h2>
+                <ul class="mt-4 space-y-2">
+                    <li class="p-2 bg-gray-200 rounded-md flex items-center space-x-2">
+                        <img src="images/overview.png" alt="Overview" class="w-6 h-6">
+                        <span>Overview</span>
+                    </li>
+                    <li class="p-2 flex items-center space-x-2 hover:bg-gray-100 rounded-md">
+                        <a href="/workout" class="flex items-center space-x-2 w-full">
+                            <img src="images/gym.png" alt="Workout" class="w-6 h-6">
+                            <span>Workout</span>
+                        </a>
+                    </li>
+                    <li class="p-2 flex items-center space-x-2 hover:bg-gray-100 rounded-md">
+                        <a href="/list" class="flex items-center space-x-2 w-full">
+                            <img src="images/goal.png" alt="Goals" class="w-6 h-6">
+                            <span>Goals</span>
+                        </a>
+                    </li>
+                    <li class="p-2 flex items-center space-x-2 hover:bg-gray-100 rounded-md">
+                        <a href="/calendar" class="flex items-center space-x-2 w-full">
+                            <img src="images/schedule.png" alt="Schedule" class="w-6 h-6">
+                            <span>My Schedule</span>
+                        </a>
+                    </li>
+                    <li class="p-2 flex items-center space-x-2 hover:bg-gray-100 rounded-md">
+                        <a href="/Goal_Progress" class="flex items-center space-x-2 w-full">
+                            <img src="images/progress.png" alt="Progress" class="w-6 h-6">
+                            <span>Progress</span>
+                        </a>
+                    </li>
+                    <li class="p-2 flex items-center space-x-2 hover:bg-gray-100 rounded-md">
+                        <a href="/bmi" class="flex items-center space-x-2 w-full">
+                            <img src="images/bmi.png" alt="BMI" class="w-6 h-6">
+                            <span>BMI</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="mb-4">
+                <a href="/logout" class="flex items-center gap-2 w-full text-left hover:bg-gray-100 text-gray-700 p-2 rounded-md">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="flex-1 pt-4 pr-6 pb-6 pl-6 overflow-y-auto">
+            <header class="flex justify-between items-center mb-4">
+                <h1 class="text-2xl font-semibold text-gray-800">Hello, <span class="font-semibold text-blue-600"><%= user.username %></span>!</h1>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <input type="text" placeholder="Search" class="border p-2 pl-10 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500" />
+                        <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                            <i class="fas fa-search"></i>
+                        </span>
+                    </div>
+                    <a href="/profile" class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-white hover:opacity-80 transition">
+                        <% if (user && user.image) { %>
+                            <img src="<%= user.image.startsWith('/uploads/') ? user.image : '/images/default-profile.png' %>" 
+                                 alt="Profile Picture" class="w-full h-full rounded-full object-cover">
+                        <% } else { %>
+                            <span class="font-semibold"><%= user && user.username ? user.username[0].toUpperCase() : 'P' %></span>
+                        <% } %>
+                    </a>
+                </div>
+            </header>
+
+            <section class="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-6 rounded-lg shadow-md mb-6">
+                <h2 class="text-lg font-semibold">Track Your Daily Activities</h2>
+                <p class="text-sm">Stay consistent and keep track of your workout progress.</p>
+            </section>
+
+            <section id="latestWorkout" class="bg-gradient-to-r from-indigo-200 via-sky-200 to-emerald-200 p-4 rounded-lg mb-6 shadow-md">
+                <h2 class="text-md font-semibold text-gray-900 mb-1">Latest Workout</h2>
+                <p class="text-gray-700">Loading...</p>
+            </section>
+
+            <section id="healthSummarySection" class="bg-white p-4 rounded-lg shadow-md mb-6">
+                <div class="flex justify-between items-center mb-4 border-b pb-2">
+                    <h3 class="text-md font-semibold text-gray-800">Health Summary</h3>
+                    <span id="bmiDate" class="text-xs text-gray-500">Loading date...</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div id="weightColumn">
+                        <p class="text-sm text-gray-500 mb-2">Weight</p>
+                        <div class="mb-2">
+                            <i class="fas fa-weight fa-2x text-blue-500"></i>
+                        </div>
+                        <p class="text-2xl font-bold text-gray-900">
+                            <span id="bmiValue">--</span> <span class="text-base font-normal">kg</span>
+                        </p>
+                        <p id="bmiStatus" class="text-sm font-medium text-gray-500 mt-1">--</p>
+                    </div>
+
+                    <div id="bodyScoreColumn">
+                        <p class="text-sm text-gray-500 mb-2">BMI</p>
+                        <div class="mb-2">
+                            <i id="bodyScoreIcon" class="fas fa-question-circle fa-2x text-gray-400"></i>
+                        </div>
+                        <p class="text-2xl font-bold text-gray-900">
+                            <span id="bodyScoreStatus">--</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="text-center mt-5 pt-3 border-t">
+                    <a href="/bmi" class="text-sm text-blue-600 hover:underline">
+                        <i class="fas fa-edit mr-1"></i>Update BMI Data
+                    </a>
+                </div>
+            </section>
+            <div id="noHealthDataMessage" class="bg-white p-4 rounded-lg shadow-md mb-6 text-center text-gray-500" style="display: none;">
+                No health summary available. <a href="/bmi" class="text-blue-600 hover:underline">Calculate your BMI</a>.
+            </div>
+
+            <section class="bg-white p-4 rounded-lg shadow-md mb-6">
+                <h3 class="text-md font-semibold mb-3">Your Goal Progress</h3>
+                <canvas id="progressChart"></canvas>
+            </section>
+
+        </main>
+
+        <aside class="w-1/4 bg-white shadow-md p-4 h-screen overflow-y-auto">
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold mb-2">My Schedule</h3>
+                <p class="p-3 bg-gray-100 rounded-md text-sm text-gray-500">No upcoming events.</p>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold mb-2">Goals</h3>
+                <ul id="goalList" class="space-y-2">
+                    <li class="p-2 text-gray-500">Loading goals...</li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // Chart.js code for Goal Progress Chart (Sample Data)
+        var ctx = document.getElementById("progressChart").getContext("2d");
+        var myChart = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: ["Week 1", "Week 2", "Week 3", "Week 4"], // Example labels
+                datasets: [{
+                    label: "Progress (%)", // Example label
+                    data: [10, 20, 35, 50], // Example data
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    borderWidth: 2,
+                    tension: 0.4, // Makes the line smooth
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true, // Allow chart to adapt height
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100 // Assuming progress is percentage
+                    }
+                }
+            }
+        });
+
+        // Function to load latest workout from localStorage
+        function loadLatestWorkout() {
+            const latestWorkoutContainer = document.getElementById("latestWorkout");
+            try {
+                const workouts = JSON.parse(localStorage.getItem("workouts")) || [];
+                const latestWorkout = workouts.length > 0 ? workouts[workouts.length - 1] : null;
+
+                if (latestWorkout) {
+                    latestWorkoutContainer.innerHTML = `
+                        <h2 class="text-md font-semibold text-gray-900 mb-1">Latest Workout</h2>
+                        <p class="text-gray-700">${latestWorkout.type} - ${latestWorkout.duration} mins (${latestWorkout.intensity})</p>
+                        <p class="text-xs text-gray-500 mt-1">Logged on: ${latestWorkout.date ? new Date(latestWorkout.date).toLocaleDateString() : 'N/A'}</p>
+                    `;
+                } else {
+                    latestWorkoutContainer.innerHTML = `
+                        <h2 class="text-md font-semibold text-gray-900 mb-1">Latest Workout</h2>
+                        <p class="text-gray-700">No workouts logged yet.</p>
+                    `;
+                }
+            } catch (error) {
+                console.error("Error loading latest workout:", error);
+                latestWorkoutContainer.innerHTML = `
+                    <h2 class="text-md font-semibold text-gray-900 mb-1">Latest Workout</h2>
+                    <p class="text-red-500">Error loading workout data.</p>`;
+            }
+        }
+
+        // Function to display goals in the sidebar from localStorage
+        function displayGoalsInSidebar() {
+            const goalListElement = document.getElementById("goalList");
+            goalListElement.innerHTML = ''; // Clear previous list
+
+            try {
+                const goals = JSON.parse(localStorage.getItem("goals")) || [];
+
+                if (goals && goals.length > 0) {
+                    goals.forEach(goal => {
+                        const goalItem = document.createElement('li');
+                        goalItem.className = 'p-2 bg-gray-100 rounded-md text-sm flex justify-between items-center';
+                        goalItem.innerHTML = `
+                            <span>${goal.name}</span>
+                            <span class="text-xs ${goal.completed ? 'text-green-600 font-semibold' : 'text-gray-500'}">${goal.completed ? 'Done' : 'Pending'}</span>
+                        `;
+                        goalListElement.appendChild(goalItem);
+                    });
+                } else {
+                    const noGoalsMessage = document.createElement('li');
+                    noGoalsMessage.className = 'p-2 text-sm text-gray-500';
+                    noGoalsMessage.textContent = 'No goals added yet.';
+                    goalListElement.appendChild(noGoalsMessage);
+                }
+            } catch (error) {
+                console.error("Error displaying goals:", error);
+                const errorItem = document.createElement('li');
+                errorItem.className = 'p-2 text-sm text-red-500';
+                errorItem.textContent = 'Error loading goals.';
+                goalListElement.appendChild(errorItem);
+            }
+        }
+
+
+function loadLatestBMIFromServer() {
+  const username = "<%= user.username %>";
+
+  fetch(`/bmi/history/${username}`)
+    .then(res => res.json())
+    .then(data => {
+      const history = data.bmiHistory || [];
+
+      if (history.length === 0) {
+        document.getElementById("bmiValue").textContent = "--";
+        document.getElementById("bmiStatus").textContent = "--";
+        document.getElementById("bodyScoreStatus").textContent = "--";
+        document.getElementById("bmiDate").textContent = "No record found";
+        document.getElementById("bodyScoreIcon").className = "fas fa-question-circle fa-2x text-gray-400";
+        return;
+      }
+
+      const latest = history[history.length - 1];
+
+      document.getElementById("bmiValue").textContent = latest.weight;
+      document.getElementById("bmiStatus").textContent = `${latest.bmi} (${latest.status})`;
+      document.getElementById("bodyScoreStatus").textContent = latest.bmi;
+      document.getElementById("bmiDate").textContent = new Date(latest.date).toLocaleDateString();
+
+      const icon = document.getElementById("bodyScoreIcon");
+      icon.className = "fas fa-heartbeat fa-2x"; // reset icon
+
+      switch (latest.status) {
+        case 'Normal':
+          icon.classList.add("text-green-500");
+          break;
+        case 'Overweight':
+          icon.classList.add("text-yellow-500");
+          break;
+        case 'Obese':
+          icon.classList.add("text-red-500");
+          break;
+        default:
+          icon.classList.add("text-gray-400");
+      }
+    })
+    .catch(err => {
+      console.error("❌ Failed to fetch BMI:", err);
+      document.getElementById("bmiValue").textContent = "--";
+      document.getElementById("bmiStatus").textContent = "Error";
+      document.getElementById("bodyScoreStatus").textContent = "--";
+      document.getElementById("bmiDate").textContent = "Error";
+      document.getElementById("bodyScoreIcon").className = "fas fa-question-circle fa-2x text-gray-400";
+    });
+}
+
+function loadGoalsFromServer() {
+  const username = "<%= user.username %>";
+
+  fetch(`/goals/${username}`)
+    .then(res => res.json())
+    .then(data => {
+      const goalList = document.getElementById("goalList");
+      goalList.innerHTML = "";
+
+      if (!data.goals || data.goals.length === 0) {
+        goalList.innerHTML = '<li class="p-2 text-sm text-gray-500">No goals added yet.</li>';
+        return;
+      }
+
+      data.goals.forEach(goal => {
+        const li = document.createElement('li');
+        li.className = 'bg-gray-100 p-3 rounded-md text-sm text-gray-700 shadow-sm space-y-1';
+
+        const statusDot = `<span class="inline-block w-2 h-2 mr-2 rounded-full ${goal.status === 'done' ? 'bg-green-500' : 'bg-red-500'}"></span>`;
+
+        li.innerHTML = `
+          <div class="font-medium flex items-center">${statusDot}${goal.name}</div>
+          <div class="text-xs text-gray-600">🎯 Goal: ${goal.goal || '—'}</div>
+          <div class="text-xs text-gray-400">📅 ${goal.date || 'No date'}</div>
+          <div class="text-xs text-gray-500">📝 ${goal.notes || 'No notes'}</div>
+        `;
+        goalList.appendChild(li);
+      });
+    })
+    .catch(err => {
+      console.error('❌ Failed to load goals:', err);
+      document.getElementById("goalList").innerHTML = '<li class="p-2 text-sm text-red-500">Failed to load goals</li>';
+    });
+}
+
+
+
+        // Load the latest workout and goals on page load
+        window.onload = function() {
+            loadLatestWorkout();
+            displayGoalsInSidebar();
+            loadLatestBMIFromServer(); // ✅ ดึงข้อมูลจาก backend
+            loadGoalsFromServer(); // ✅ อัปเดตจาก localStorage -> backend
+        }
+    </script>
+</body>
+</html>

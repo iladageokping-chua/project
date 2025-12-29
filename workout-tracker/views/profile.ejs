@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    function toggleEdit() {
+      document.getElementById('view-section').classList.add('hidden');
+      document.getElementById('edit-form').classList.remove('hidden');
+    }
+  </script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center px-4">
+  <div class="w-full max-w-sm bg-white rounded-xl shadow-lg overflow-hidden relative">
+
+    <!-- 🔙 Back Button -->
+    <a id="backButton"
+       href="/workout_tracker"
+       class="fixed top-6 left-6 bg-gray-200 text-gray-700 hover:bg-gray-300 rounded-xl p-2 shadow-lg flex items-center justify-center transition">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+           viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+      </svg>
+    </a>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        if (document.referrer.includes("/calendar")) {
+          document.getElementById("backButton").setAttribute("href", "/calendar");
+        }
+      });
+    </script>
+
+    <!-- Profile Image -->
+    <form method="POST" action="/profile/upload" enctype="multipart/form-data">
+      <div class="bg-gray-700 h-32 relative">
+        <div class="absolute -bottom-14 left-1/2 transform -translate-x-1/2 z-10">
+          <label for="profileImage" class="cursor-pointer relative block">
+            <% if (user && user.image) { %>
+              <img src="<%= user.image.startsWith('/uploads/') ? user.image : '/images/default-profile.png' %>" 
+                   class="w-28 h-28 rounded-full border-4 border-white object-cover shadow-md">
+            <% } else { %>
+              <div class="w-28 h-28 rounded-full border-4 border-white bg-gray-300 text-white flex items-center justify-center text-3xl font-bold shadow-md">
+                <%= user.username.charAt(0).toUpperCase() %>
+              </div>
+            <% } %>
+            <div class="absolute bottom-1 right-1 bg-black bg-opacity-60 p-1 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h2l2-2h10l2 2h2a1 1 0 011 1v11a1 1 0 01-1 1H3a1 1 0 01-1-1V8a1 1 0 011-1z" />
+                <circle cx="12" cy="13" r="3" />
+              </svg>
+            </div>
+            <input type="file" name="profileImage" id="profileImage" class="hidden" onchange="this.form.submit()">
+          </label>
+        </div>
+      </div>
+    </form>
+
+    <!-- View Section -->
+    <div id="view-section" class="pt-20 pb-4 px-6 text-center space-y-1">
+      <% if (successMessage) { %>
+        <div class="success-message text-green-500 font-semibold"><%= successMessage %></div> <!-- Ensure success message is styled -->
+      <% } %>
+      <h1 class="text-xl font-bold">Profile</h1>
+      <h2 class="text-xl font-bold"><%= user.username %></h2>
+      <p class="text-gray-500">@: <%= user.email %></p>
+      <% if (user.phone) { %><p class="text-gray-500">T: <%= user.phone %></p><% } %>
+      <% if (user.gender) { %><p class="text-gray-500">G: <%= user.gender %></p><% } %>
+      <button id="editprofilebtn" onclick="toggleEdit()" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+        Edit Profile
+      </button>
+    </div>
+
+    <!-- Edit Form -->
+    <form method="POST" action="/profile/update" id="edit-form" class="pt-20 px-6 pb-4 space-y-3 hidden">
+      <input type="hidden" name="username" value="<%= user.username %>">
+      <input type="hidden" name="email" value="<%= user.email %>">
+      <div>
+        <label class="block text-sm font-medium">Phone</label>
+        <input type="text" name="phone" value="<%= user.phone || '' %>" class="w-full border rounded-lg px-3 py-2 mt-1">
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Birthday</label>
+        <input type="date" name="birthday" value="<%= user.birthday || '' %>" class="w-full border rounded-lg px-3 py-2 mt-1">
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Gender</label>
+        <select name="gender" class="w-full border rounded-lg px-3 py-2 mt-1">
+          <option value="">-- Select --</option>
+          <option value="male" <%= user.gender === 'male' ? 'selected' : '' %>>Male</option>
+          <option value="female" <%= user.gender === 'female' ? 'selected' : '' %>>Female</option>
+          <option value="other" <%= user.gender === 'other' ? 'selected' : '' %>>Other</option>
+        </select>
+      </div>
+      <button type="submit" class="w-full bg-green-500 text-white font-semibold py-2 rounded-lg hover:bg-green-600 transition">
+        Save Changes
+      </button>
+    </form>
+
+    <!-- Logout -->
+    <div class="px-6 py-4">
+      <a href="/logout" class="block text-center text-red-500 hover:underline">Log out</a>
+    </div>
+  </div>
+</body>
+</html>

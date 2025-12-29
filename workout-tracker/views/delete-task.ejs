@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Task</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <div class="container mx-auto p-6">
+        <div class="bg-white shadow-md rounded-lg p-6 max-w-xl mx-auto">
+            <h1 class="text-2xl font-bold text-red-600 mb-4">⚠️ Confirm Deletion</h1>
+            
+            <p class="text-gray-700 mb-6">
+                Are you sure you want to delete the following task?
+            </p>
+
+            <div class="bg-gray-100 rounded-md p-4 mb-6">
+                <h2 class="text-xl font-semibold"><%= task.name %></h2>
+                <p class="text-gray-600">🎯 Goal: <%= task.goal %></p>
+                <p class="text-gray-500">📅 Due Date: <%= task.date %></p>
+                <p class="text-gray-400"><%= task.notes %></p>
+            </div>
+
+            <form action="/delete-task/<%= task.id %>" method="POST" class="flex justify-between">
+                <a href="/" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Cancel</a>
+                <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Yes, Delete</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

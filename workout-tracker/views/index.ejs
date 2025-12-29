@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Reviews</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .summary {
+      margin-bottom: 20px;
+    }
+    .review {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    .actions {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+<h1>Task List</h1>
+Welcome user
+<a href="/logout">Logout</a>
+<form action="/add" method="POST">
+  <input type="text" name="username" placeholder="User Name" required />
+  <input type="text" name="name" placeholder="Task Name" required />
+  <textarea name="description" placeholder="Task Description" required></textarea>
+  <label for="priority">Priority:</label>
+  <select name="priority" id="priority">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+  </select>
+  <button type="submit">Add Task</button>
+</form>
+
+<h2>Task Summary by Priority</h2>
+<ul>
+  <% Object.keys(summary).forEach(priority => { %>
+    <li>Priority <%= priority %>: <%= summary[priority] %> tasks</li>
+  <% }) %>
+</ul>
+
+<!-- Search Task Form -->
+<form action="/search" method="POST">
+  <input type="text" name="searchName" placeholder="Search Task by Name" />
+  <button type="submit">Search</button>
+</form>
+
+<!-- Sort Button -->
+<a href="/sort"><button>Sort by Priority</button></a>
+
+<ul>
+  <% tasks.forEach(task => { %>
+    <li>
+      <strong><%= task.name %></strong>: <%= task.description %> by <%= task.username %> (Priority: <%= task.priority %>)
+      <a href="/view/<%= task.name %>">View</a>
+    </li>
+  <% }) %>
+</ul>
+
+<form action="/delete" method="POST">
+  <ul>
+    <% tasks.forEach(task => { %>
+      <li>
+        <input type="checkbox" name="taskNames" value="<%= task.name %>" />
+        <strong><%= task.name %></strong>: <%= task.description %> by <%= task.username %> (Priority: <%= task.priority %>)
+      </li>
+      <a href="/view/<%= task.name %>">View</a>
+    <% }) %>
+  </ul>
+  <button type="submit">Delete Selected Tasks</button>
+</form>
+
+      
+
+</body>
+</html>

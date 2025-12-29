@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BMI Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#333] flex justify-center items-center min-h-screen">
+  <!-- 🔙 Back Button -->
+  <a id="backButton"
+    href="/workout_tracker"
+    class="fixed top-6 left-6 bg-gray-200 text-gray-700 hover:bg-gray-300 rounded-xl p-2 shadow-lg flex items-center justify-center transition">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+      viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+    </svg>
+  </a>
+
+  <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-lg overflow-y-auto max-h-screen">
+    <h2 class="text-lg font-semibold mb-4">Hi <span class="text-[#333] font-bold"><%= user.username %>!</span></h2>
+
+    <!-- Gender toggle -->
+    <div class="flex justify-center space-x-4 mb-6">
+      <button id="maleBtn" class="px-4 py-2 rounded-md bg-gray-200 text-[#333] font-medium">Male</button>
+      <button id="femaleBtn" class="px-4 py-2 rounded-md bg-gray-100 text-gray-600 font-medium">Female</button>
+    </div>
+
+    <!-- Age -->
+    <div class="mb-4">
+      <label class="text-sm font-medium text-gray-700 block mb-1">What's your age?</label>
+      <input type="number" id="age" class="w-full p-2 border rounded-md focus:outline-none focus:ring focus:border-gray-500" placeholder="22">
+    </div>
+
+    <!-- Weight -->
+    <div class="mb-6">
+      <label class="text-sm font-medium text-gray-700 block mb-1">What's your weight?</label>
+      <div class="flex items-center space-x-2">
+        <input type="number" id="weight" class="w-full p-2 border rounded-md focus:outline-none focus:ring focus:border-gray-500" placeholder="65">
+        <span class="text-gray-500">kg</span>
+      </div>
+    </div>
+
+    <!-- Height input -->
+    <div class="mb-4">
+      <label class="text-sm font-medium text-gray-700 block mb-1">What's your height?</label>
+      <div class="flex items-center space-x-2">
+        <input type="number" id="height" step="0.01" class="w-full p-2 border rounded-md focus:outline-none focus:ring focus:border-gray-500" placeholder="1.70">
+        <span class="text-gray-500">m</span>
+      </div>
+    </div>
+
+    <!-- Calculate Button -->
+    <button onclick="calculateBMI()" class="w-full bg-[#333] text-white py-2 rounded-md font-semibold hover:bg-gray-800 transition">
+      Calculate BMI
+    </button>
+
+    <!-- Result -->
+    <div id="result" class="text-center mt-6 text-lg font-semibold text-[#333]"></div>
+
+    <!-- History -->
+    <div class="mt-8">
+      <h3 class="text-md font-semibold text-[#333] mb-2">History</h3>
+      <ul id="bmiHistory" class="space-y-2 max-h-48 overflow-y-auto pr-2">
+        <!-- ประวัติจะถูกแสดงตรงนี้ -->
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    let selectedGender = 'male';
+    const currentUser = "<%= user.username %>";
+    const key = `bmiHistory_${currentUser}`;
+
+    // Gender toggle logic
+    const maleBtn = document.getElementById("maleBtn");
+    const femaleBtn = document.getElementById("femaleBtn");
+
+    maleBtn.addEventListener("click", () => {
+      selectedGender = 'male';
+      maleBtn.classList.add("bg-gray-200", "text-[#333]");
+      maleBtn.classList.remove("bg-gray-100", "text-gray-600");
+      femaleBtn.classList.remove("bg-gray-200", "text-[#333]");
+      femaleBtn.classList.add("bg-gray-100", "text-gray-600");
+    });
+
+    femaleBtn.addEventListener("click", () => {
+      selectedGender = 'female';
+      femaleBtn.classList.add("bg-gray-200", "text-[#333]");
+      femaleBtn.classList.remove("bg-gray-100", "text-gray-600");
+      maleBtn.classList.remove("bg-gray-200", "text-[#333]");
+      maleBtn.classList.add("bg-gray-100", "text-gray-600");
+    });
+
+    function calculateBMI() {
+      const age = parseInt(document.getElementById('age').value);
+      const gender = selectedGender;
+      const weight = parseFloat(document.getElementById('weight').value);
+      const height = parseFloat(document.getElementById('height').value);
+
+      if (!height || !weight || height <= 0 || weight <= 0) {
+        document.getElementById('result').textContent = 'Please enter valid values.';
+        return;
+      }
+
+      const bmi = (weight / (height * height)).toFixed(2);
+      let status = '';
+
+      if (bmi < 18.5) status = 'Underweight';
+      else if (bmi < 24.9) status = 'Normal';
+      else if (bmi < 29.9) status = 'Overweight';
+      else status = 'Obese';
+
+      document.getElementById('result').textContent = `Your BMI is ${bmi} (${status})`;
+
+      // Save BMI data to backend
+      fetch('/bmi/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ age, gender, weight, height, bmi, status })
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to save BMI data');
+        return res.json();
+      })
+      .then(data => {
+        console.log('✅ Saved:', data);
+        renderHistory(); // Refresh history after saving
+      })
+      .catch(err => {
+        console.error('❌ Error:', err);
+        document.getElementById('result').textContent = 'Failed to save BMI data.';
+      });
+    }
+
+    function renderHistory() {
+      const list = document.getElementById('bmiHistory');
+      list.innerHTML = 'Loading...';
+
+      fetch(`/bmi/history/${currentUser}`)
+        .then(res => {
+          if (!res.ok) throw new Error('Failed to fetch BMI history');
+          return res.json();
+        })
+        .then(data => {
+          const history = data.bmiHistory || [];
+          list.innerHTML = '';
+          if (history.length === 0) {
+            list.innerHTML = '<li class="text-gray-500">No BMI history available.</li>';
+            return;
+          }
+          history.slice().reverse().forEach(entry => {
+            const item = document.createElement('li');
+            item.className = 'bg-gray-100 p-2 rounded-md text-sm text-gray-700';
+            item.textContent = `${new Date(entry.date).toLocaleString()} - BMI: ${entry.bmi} (${entry.status})`;
+            list.appendChild(item);
+          });
+        })
+        .catch(err => {
+          console.error('Error loading BMI history:', err);
+          list.innerHTML = '<li class="text-red-500">Failed to load BMI history</li>';
+        });
+    }
+
+    // Load history on DOM ready
+    window.addEventListener('DOMContentLoaded', renderHistory);
+  </script>
+</body>
+</html>

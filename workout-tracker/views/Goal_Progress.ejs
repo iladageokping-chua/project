@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Goal Progress - Workout Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+  
+  <!-- CSS Reset -->
+  <style>
+
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+    }
+
+    /* Highlight active sidebar tab */
+    .sidebar-tab {
+      transition: background-color 0.3s ease;
+    }
+    .sidebar-tab.active {
+      background-color: #2d2d2d; /* Darker background */
+      color: white; /* Text color change */
+    }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans">
+  <% if (!user) { %>
+    <script>
+      window.location.href = "/login";
+    </script>
+  <% } %>
+
+  <div class="flex h-screen items-start">
+        <aside class="w-1/5 bg-white shadow-md p-4 h-screen flex flex-col justify-between">
+            <div>
+                <h2 class="text-lg font-bold">Workout Tracker</h2>
+                <ul class="mt-4 space-y-2">
+                    <li class="p-2 bg-gray-200 rounded-md flex items-center space-x-2">
+                        <img src="images/overview.png" alt="Logo" class="w-6 h-6">
+                        <span>Overview</span>
+                    </li>
+                    <li class="p-2 flex items-center space-x-2 sidebar-tab" id="workoutTab">
+                        <a href="/workout" class="flex items-center space-x-2 w-full">
+                            <img src="images/gym.png" alt="Logo" class="w-6 h-6">
+                            <span>Workout</span>
+                        </a>
+                    </li>
+                    <li class="p-2 flex items-center space-x-2">
+                        <a href="/list" class="flex items-center space-x-2 w-full">
+                            <img src="images/goal.png" alt="Logo" class="w-6 h-6">
+                            <span>Goals</span>
+                        </a>
+                    </li>
+                    <li class="p-2 flex items-center space-x-2">
+                        <a href="/calendar" class="flex items-center space-x-2 w-full">
+                            <img src="images/schedule.png" alt="Logo" class="w-6 h-6">
+                            <span>My Schedule</span>
+                        </a>
+                    </li>
+                    <li class="p-2 flex items-center space-x-2">
+                        <a href="/Goal_Progress" class="flex items-center space-x-2 w-full">
+                            <img src="images/progress.png" alt="Logo" class="w-6 h-6">
+                            <span>Progress</span>
+                        </a>
+                    </li>
+                    <li class="p-2 flex items-center space-x-2">
+                      <a href="/bmi" class="flex items-center space-x-2 w-full">
+                          <img src="images/bmi.png" alt="Logo" class="w-6 h-6">
+                          <span>BMI</span>
+                      </a>
+                  </li> 
+                </ul>
+            </div>
+            <div class="mb-4">
+                <a href="/logout" class="flex items-center gap-2 w-full text-left hover:bg-gray-100 text-gray-700 p-2 rounded-md">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 pt-6 pr-6 pb-6 pl-6 overflow-y-auto">
+      <header class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-semibold text-gray-800">Hello, <span class="font-semibold text-blue-600"><%= user.username %></span>!</h1>
+        <div class="flex items-center space-x-6">
+          <div class="relative">
+            <input type="text" placeholder="Search" class="border p-2 pl-10 rounded-md text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-lg text-gray-500">
+              <i class="fas fa-search"></i>
+            </span>
+          </div>
+          <span class="text-lg text-gray-600">🔔</span>
+          <span class="text-lg text-gray-600">⚙️</span>
+          <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-white">
+            <span class="font-semibold"><%= user && user.username ? user.username[0].toUpperCase() : 'P' %></span>
+          </div>
+        </div>
+      </header>
+
+      <section class="bg-[#8C8C8C] p-6 rounded-lg mb-6 text-white">
+        <h2 class="text-xl font-semibold">Track Your Goal Progress</h2>
+        <p class="text-sm">Stay motivated and monitor your progress towards your fitness goals.</p>
+      </section>
+
+      <!-- Multiple Goal Progress Charts (2 graphs per row) -->
+      <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">Your Goal Progress (Line Chart)</h3>
+          <canvas id="progressLineChart"></canvas>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">Your Goal Progress (Bar Chart)</h3>
+          <canvas id="progressBarChart"></canvas>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">Your Goal Progress (Pie Chart)</h3>
+          <canvas id="progressPieChart"></canvas>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">Your Goal Progress (Doughnut Chart)</h3>
+          <canvas id="progressDoughnutChart"></canvas>
+        </div>
+      </section>
+
+      <script>
+        // Set active tab
+        const tabs = document.querySelectorAll('.sidebar-tab');
+
+        tabs.forEach(tab => {
+          tab.addEventListener('click', function() {
+            tabs.forEach(tab => tab.classList.remove('active')); // Remove active class from all tabs
+            tab.classList.add('active'); // Add active class to clicked tab
+          });
+        });
+
+        // Chart.js for Line Chart
+        var ctxLine = document.getElementById("progressLineChart").getContext("2d");
+        var progressLineChart = new Chart(ctxLine, {
+          type: "line",
+          data: {
+            labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+            datasets: [{
+              label: "Progress (Line)",
+              data: [10, 20, 35, 50],
+              borderColor: "rgba(75, 192, 192, 1)",
+              backgroundColor: "rgba(75, 192, 192, 0.2)",
+              borderWidth: 2,
+              tension: 0.4
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: { beginAtZero: true }
+            }
+          }
+        });
+
+        // Chart.js for Bar Chart
+        var ctxBar = document.getElementById("progressBarChart").getContext("2d");
+        var progressBarChart = new Chart(ctxBar, {
+          type: "bar",
+          data: {
+            labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+            datasets: [{
+              label: "Progress (Bar)",
+              data: [10, 20, 35, 50],
+              backgroundColor: "rgba(75, 192, 192, 0.5)",
+              borderColor: "rgba(75, 192, 192, 1)",
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: { beginAtZero: true }
+            }
+          }
+        });
+
+        // Chart.js for Pie Chart
+        var ctxPie = document.getElementById("progressPieChart").getContext("2d");
+        var progressPieChart = new Chart(ctxPie, {
+          type: "pie",
+          data: {
+            labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+            datasets: [{
+              label: "Progress (Pie)",
+              data: [10, 20, 35, 50],
+              backgroundColor: [
+                "rgba(75, 192, 192, 0.5)",
+                "rgba(153, 102, 255, 0.5)",
+                "rgba(255, 159, 64, 0.5)",
+                "rgba(255, 99, 132, 0.5)"
+              ],
+              borderColor: [
+                "rgba(75, 192, 192, 1)",
+                "rgba(153, 102, 255, 1)",
+                "rgba(255, 159, 64, 1)",
+                "rgba(255, 99, 132, 1)"
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true
+          }
+        });
+
+        // Chart.js for Doughnut Chart
+        var ctxDoughnut = document.getElementById("progressDoughnutChart").getContext("2d");
+        var progressDoughnutChart = new Chart(ctxDoughnut, {
+          type: "doughnut",
+          data: {
+            labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+            datasets: [{
+              label: "Progress (Doughnut)",
+              data: [10, 20, 35, 50],
+              backgroundColor: [
+                "rgba(75, 192, 192, 0.5)",
+                "rgba(153, 102, 255, 0.5)",
+                "rgba(255, 159, 64, 0.5)",
+                "rgba(255, 99, 132, 0.5)"
+              ],
+              borderColor: [
+                "rgba(75, 192, 192, 1)",
+                "rgba(153, 102, 255, 1)",
+                "rgba(255, 159, 64, 1)",
+                "rgba(255, 99, 132, 1)"
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true
+          }
+        });
+      </script>
+    </main>
+
+    <!-- Sidebar ขวา -->
+    <aside class="w-1/4 bg-white shadow-md p-6 min-h-screen flex flex-col">
+      <div class="mb-6">
+        <h3 class="text-lg font-semibold">My Schedule</h3>
+        <p class="p-2 bg-gray-200 rounded-md"></p>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold">Goals</h3>
+        <p class="p-2 bg-gray-200 rounded-md"></p>
+      </div>
+    </aside>
+  </div>
+</body>
+
+</html>

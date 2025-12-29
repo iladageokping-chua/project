@@ -1,0 +1,152 @@
+[
+  {
+    "username": "arinn",
+    "email": "arinn@gmail",
+    "password": "$2b$10$p72JGjDYSd1IAK5E6W137OdjKXS2Eg61FYwt2lfVvW9gQIm3b0QhG",
+    "image": "/uploads/1743345296154.jpg",
+    "birthday": "2025-03-12",
+    "gender": "female",
+    "phone": "0123456789",
+    "bmiHistory": [
+      {
+        "age": 24,
+        "gender": "female",
+        "weight": 55,
+        "height": 1.65,
+        "bmi": "20.20",
+        "status": "Normal",
+        "date": "2025-03-31T10:57:52.831Z"
+      }
+    ],
+    "tasks": [
+      {
+        "id": 1743420822355,
+        "name": "hi test",
+        "goal": "aaa",
+        "date": "2025-03-27",
+        "notes": "-- hi hi hi",
+        "status": "not_done"
+      },
+      {
+        "id": 1743422779272,
+        "name": "hello",
+        "goal": "abc",
+        "date": "2025-03-01",
+        "notes": "testttttt",
+        "status": "done"
+      }
+    ]
+  },
+  {
+    "username": "lookgate",
+    "email": "lookgate@example.com",
+    "password": "$2b$10$JaqvgO.09dz5Yd/hQvqiMurx9J3L9ckNXNneLGwSwcO3bXY5bgevm",
+    "image": "/uploads/1743349093849.jfif",
+    "phone": "7897899870",
+    "birthday": "2025-05-04",
+    "gender": "female",
+    "bmiHistory": [
+      {
+        "age": 25,
+        "gender": "female",
+        "weight": 50,
+        "height": 1.6,
+        "bmi": "19.53",
+        "status": "Normal",
+        "date": "2025-04-30T12:00:00.000Z"
+      }
+    ]
+  },
+  {
+    "username": "ken",
+    "email": "ken@g.com",
+    "password": "$2b$10$i2oSrapQedkbzYwykZ4zxOsYg/TzKMnYEC2ffcmEwW9pGpTBK2ddy",
+    "image": "/uploads/d5cc39f832258efd1d291d3165f89510",
+    "tasks": [
+      {
+        "id": 1745668874781,
+        "name": "awfgogogog",
+        "goal": "awf",
+        "date": "2025-04-26",
+        "notes": "afwa",
+        "status": "done"
+      }
+    ],
+    "bmiHistory": [
+      {
+        "age": 20,
+        "gender": "male",
+        "weight": 58,
+        "height": 1.69,
+        "bmi": "20.31",
+        "status": "Normal",
+        "date": "2025-04-24T09:48:09.727Z"
+      }
+    ],
+    "phone": "afaf",
+    "birthday": "2025-04-10",
+    "gender": "male"
+  },
+  {
+    "username": "123",
+    "email": "123@k",
+    "password": "$2b$10$aabKbc3jWNUHM8sfcCzwfeuPdYrUjDIvD8gr3YczClSLDwcTfC9li",
+    "image": "/uploads/fd0fe049906ece66c83eefaf2bba73d2",
+    "bmiHistory": [
+      {
+        "age": 20,
+        "gender": "male",
+        "weight": 58,
+        "height": 1.69,
+        "bmi": "20.31",
+        "status": "Normal",
+        "date": "2025-04-26T20:25:36.234Z"
+      },
+      {
+        "age": 22,
+        "gender": "male",
+        "weight": 60,
+        "height": 1.89,
+        "bmi": "16.80",
+        "status": "Underweight",
+        "date": "2025-04-27T11:55:23.222Z"
+      },
+      {
+        "age": 20,
+        "gender": "male",
+        "weight": 168,
+        "height": 1.69,
+        "bmi": "58.82",
+        "status": "Obese",
+        "date": "2025-04-27T12:55:21.412Z"
+      }
+    ],
+    "phone": "05515156",
+    "birthday": "2025-04-27",
+<<<<<<< HEAD
+    "gender": "male",
+    "tasks": [
+      {
+        "id": 1745758552274,
+        "name": "awf",
+        "goal": "f",
+        "date": "2025-04-27",
+        "notes": "",
+        "priority": 0,
+        "status": "not_done"
+      }
+    ]
+=======
+    "gender": "male"
+  },
+  {
+    "username": "arinnn",
+    "email": "arinn@gmail.com",
+    "password": "$2b$10$GKEa52HTeMqvharHJA58H..KrcPw3eSA7T9oJczKA9.UIxZLXBbrW",
+    "image": "/images/default-profile.png",
+    "phone": "",
+    "birthday": "",
+    "gender": ""
+>>>>>>> 17cc5d2f1b3e05aefdbc2e9822e51c01a2eb034e
+  }
+]
