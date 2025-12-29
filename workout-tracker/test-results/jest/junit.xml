@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="64" failures="0" errors="0" time="1.218">
+  <testsuite name="Auth Controller" errors="0" failures="0" skipped="0" timestamp="2025-04-27T12:51:13" time="1.086" tests="64">
+    <testcase classname="Auth Controller authenticate redirects to login if not authenticated" name="Auth Controller authenticate redirects to login if not authenticated" time="0.004">
+    </testcase>
+    <testcase classname="Auth Controller authenticate calls next if user is authenticated" name="Auth Controller authenticate calls next if user is authenticated" time="0.001">
+    </testcase>
+    <testcase classname="Auth Controller authenticate handles missing session object" name="Auth Controller authenticate handles missing session object" time="0">
+    </testcase>
+    <testcase classname="Auth Controller authenticate handles invalid session structure" name="Auth Controller authenticate handles invalid session structure" time="0">
+    </testcase>
+    <testcase classname="Auth Controller login authenticates user with correct credentials" name="Auth Controller login authenticates user with correct credentials" time="0.001">
+    </testcase>
+    <testcase classname="Auth Controller login fails with incorrect password" name="Auth Controller login fails with incorrect password" time="0.001">
+    </testcase>
+    <testcase classname="Auth Controller login handles error during password verification" name="Auth Controller login handles error during password verification" time="0.001">
+    </testcase>
+    <testcase classname="Auth Controller login handles error during file read" name="Auth Controller login handles error during file read" time="0.001">
+    </testcase>
+    <testcase classname="Auth Controller login handles JSON parse error" name="Auth Controller login handles JSON parse error" time="0">
+    </testcase>
+    <testcase classname="Auth Controller login handles empty request body" name="Auth Controller login handles empty request body" time="0">
+    </testcase>
+    <testcase classname="Auth Controller login handles missing username or password" name="Auth Controller login handles missing username or password" time="0">
+    </testcase>
+    <testcase classname="Auth Controller login handles user not found" name="Auth Controller login handles user not found" time="0.001">
+    </testcase>
+    <testcase classname="Auth Controller logout destroys session and redirects to login" name="Auth Controller logout destroys session and redirects to login" time="0">
+    </testcase>
+    <testcase classname="Auth Controller logout handles error during session destruction" name="Auth Controller logout handles error during session destruction" time="0">
+    </testcase>
+    <testcase classname="Auth Controller handleUnexpectedError sends 500 status for unexpected errors" name="Auth Controller handleUnexpectedError sends 500 status for unexpected errors" time="0">
+    </testcase>
+    <testcase classname="Auth Controller showLoginPage renders the login page with an error message" name="Auth Controller showLoginPage renders the login page with an error message" time="0.001">
+    </testcase>
+    <testcase classname="User Controller signup creates a new user" name="User Controller signup creates a new user" time="0.001">
+    </testcase>
+    <testcase classname="User Controller updateProfile updates user profile" name="User Controller updateProfile updates user profile" time="0.001">
+    </testcase>
+    <testcase classname="User Controller login handles username not found" name="User Controller login handles username not found" time="0">
+    </testcase>
+    <testcase classname="User Controller signup handles existing username or email" name="User Controller signup handles existing username or email" time="0">
+    </testcase>
+    <testcase classname="User Controller updateProfile handles user not found" name="User Controller updateProfile handles user not found" time="0.001">
+    </testcase>
+    <testcase classname="User Controller signup handles error during file write" name="User Controller signup handles error during file write" time="0.001">
+    </testcase>
+    <testcase classname="User Controller updateProfile handles error during file write" name="User Controller updateProfile handles error during file write" time="0.001">
+    </testcase>
+    <testcase classname="User Controller updateProfile handles invalid input data" name="User Controller updateProfile handles invalid input data" time="0.001">
+    </testcase>
+    <testcase classname="User Controller signup handles missing input fields" name="User Controller signup handles missing input fields" time="0">
+    </testcase>
+    <testcase classname="User Controller updateProfile handles empty request body" name="User Controller updateProfile handles empty request body" time="0">
+    </testcase>
+    <testcase classname="User Controller signup handles invalid email format" name="User Controller signup handles invalid email format" time="0.001">
+    </testcase>
+    <testcase classname="User Controller updateProfile handles missing username" name="User Controller updateProfile handles missing username" time="0.001">
+    </testcase>
+    <testcase classname="User Controller signup handles invalid password format" name="User Controller signup handles invalid password format" time="0">
+    </testcase>
+    <testcase classname="User Controller updateProfile handles invalid gender" name="User Controller updateProfile handles invalid gender" time="0">
+    </testcase>
+    <testcase classname="User Controller updateProfile handles invalid birthday format" name="User Controller updateProfile handles invalid birthday format" time="0">
+    </testcase>
+    <testcase classname="User Controller signup handles duplicate username or email" name="User Controller signup handles duplicate username or email" time="0">
+    </testcase>
+    <testcase classname="User Controller signup handles error parsing user data" name="User Controller signup handles error parsing user data" time="0.001">
+    </testcase>
+    <testcase classname="User Controller updateProfile handles invalid birthday format" name="User Controller updateProfile handles invalid birthday format" time="0.001">
+    </testcase>
+    <testcase classname="User Controller updateProfile handles missing gender" name="User Controller updateProfile handles missing gender" time="0">
+    </testcase>
+    <testcase classname="User Controller updateProfile handles user not found" name="User Controller updateProfile handles user not found" time="0">
+    </testcase>
+    <testcase classname="Task Controller addTask adds a new task" name="Task Controller addTask adds a new task" time="0">
+    </testcase>
+    <testcase classname="Task Controller deleteTask removes a task" name="Task Controller deleteTask removes a task" time="0">
+    </testcase>
+    <testcase classname="Task Controller deleteMultipleTasks removes multiple tasks" name="Task Controller deleteMultipleTasks removes multiple tasks" time="0">
+    </testcase>
+    <testcase classname="Task Controller editTask updates an existing task" name="Task Controller editTask updates an existing task" time="0">
+    </testcase>
+    <testcase classname="Task Controller sortTasksByPriority sorts tasks by priority" name="Task Controller sortTasksByPriority sorts tasks by priority" time="0">
+    </testcase>
+    <testcase classname="Task Controller searchTasksByName filters tasks by name" name="Task Controller searchTasksByName filters tasks by name" time="0">
+    </testcase>
+    <testcase classname="Task Controller addTask handles error during file read" name="Task Controller addTask handles error during file read" time="0">
+    </testcase>
+    <testcase classname="Task Controller addTask handles error during file write" name="Task Controller addTask handles error during file write" time="0">
+    </testcase>
+    <testcase classname="Task Controller deleteTask handles task not found" name="Task Controller deleteTask handles task not found" time="0.001">
+    </testcase>
+    <testcase classname="Task Controller addTask handles missing task data" name="Task Controller addTask handles missing task data" time="0.001">
+    </testcase>
+    <testcase classname="Task Controller deleteMultipleTasks handles empty taskNames array" name="Task Controller deleteMultipleTasks handles empty taskNames array" time="0.001">
+    </testcase>
+    <testcase classname="Task Controller editTask handles task not found" name="Task Controller editTask handles task not found" time="0.001">
+    </testcase>
+    <testcase classname="Task Controller addTask handles invalid date format" name="Task Controller addTask handles invalid date format" time="0.001">
+    </testcase>
+    <testcase classname="Task Controller editTask handles invalid task ID" name="Task Controller editTask handles invalid task ID" time="0">
+    </testcase>
+    <testcase classname="Task Controller addTask handles missing priority" name="Task Controller addTask handles missing priority" time="0">
+    </testcase>
+    <testcase classname="Task Controller deleteMultipleTasks handles user not found" name="Task Controller deleteMultipleTasks handles user not found" time="0.004">
+    </testcase>
+    <testcase classname="Task Controller updateTaskStatus updates task status" name="Task Controller updateTaskStatus updates task status" time="0.001">
+    </testcase>
+    <testcase classname="Task Controller updateTaskStatus handles task not found" name="Task Controller updateTaskStatus handles task not found" time="0.001">
+    </testcase>
+    <testcase classname="Task Controller renderEditTaskPage handles user or tasks not found" name="Task Controller renderEditTaskPage handles user or tasks not found" time="0">
+    </testcase>
+    <testcase classname="Task Controller renderEditTaskPage handles task not found" name="Task Controller renderEditTaskPage handles task not found" time="0">
+    </testcase>
+    <testcase classname="Task Controller addTask handles user not found" name="Task Controller addTask handles user not found" time="0">
+    </testcase>
+    <testcase classname="Task Controller deleteMultipleTasks handles invalid task IDs" name="Task Controller deleteMultipleTasks handles invalid task IDs" time="0.001">
+    </testcase>
+    <testcase classname="Task Controller editTask handles invalid input data" name="Task Controller editTask handles invalid input data" time="0">
+    </testcase>
+    <testcase classname="Task Controller updateTaskStatus handles invalid status" name="Task Controller updateTaskStatus handles invalid status" time="0">
+    </testcase>
+    <testcase classname="Calendar Controller getCalendar renders calendar view" name="Calendar Controller getCalendar renders calendar view" time="0.004">
+    </testcase>
+    <testcase classname="Calendar Controller getCalendar handles user not found" name="Calendar Controller getCalendar handles user not found" time="0">
+    </testcase>
+    <testcase classname="Calendar Controller getCalendar handles file read error" name="Calendar Controller getCalendar handles file read error" time="0">
+    </testcase>
+    <testcase classname="Calendar Controller getCalendar handles empty task list" name="Calendar Controller getCalendar handles empty task list" time="0.001">
+    </testcase>
+  </testsuite>
+</testsuites>

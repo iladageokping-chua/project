@@ -1,0 +1,12 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-image: url('your-image-path.jpg'); /* Add a fitness-related image */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
