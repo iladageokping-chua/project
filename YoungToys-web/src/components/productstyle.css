@@ -1,0 +1,27 @@
+.product-details button {
+    background-color: rgba(0, 0, 0, 0.7);
+        /* Transparent black background */
+        color: white;
+        /* Text color */
+        border: 2px solid transparent;
+        /* Transparent border */
+        transition: border 0.3s ease-in-out;
+        /* Add a smooth transition effect for the border */
+}
+
+.product-details button:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+        /* Darker transparent black background on hover */
+        border: 2px solid white;
+        /* White border on hover */
+}
+
+.text-start {
+    font-size: 20px;
+    padding-top: 4px;
+}
+
+video {
+        filter: brightness(0.2);
+            /* ทำให้วิดีโอมืดลง */
+}

@@ -1,0 +1,67 @@
+/* form.css */
+.form-container {
+  justify-content: center;
+  align-items: center;
+  height: 85vh;
+  position: relative;
+  padding-top: 35vh;
+  /* เพิ่มคุณสมบัติ position เพื่อให้สามารถกำหนดขนาดของกล่องสีขาวได้ */
+}
+
+/* กล่องสีขาวด้านหลัง */
+.form-container:before {
+  content: "";
+  position: absolute;
+  top: 30%;
+  /* ปรับตำแหน่งของกล่องสีขาวลงเล็กน้อย */
+  left: 25%;
+  /* ปรับตำแหน่งของกล่องสีขาวลงเล็กน้อย */
+  width: 50%;
+  /* ปรับขนาดความกว้างของกล่องสีขาว */
+  height: 60%;
+  /* ปรับขนาดความสูงของกล่องสีขาว */
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 2px solid #ffffff;
+  border-radius: 30px;
+  /* สีขาวที่มีความโปร่งแสง */
+  z-index: -1;
+  /* กำหนดให้อยู่ด้านหลังของเนื้อหา */
+}
+
+/* Optional: Style adjustments */
+.box {
+  color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  background-color: #000000;
+}
+
+.box a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+h2.mb-3 {
+  color: rgb(3, 3, 3);
+  /* เปลี่ยนสีข้อความ "Login" เป็นสีขาว */
+}
+
+#login_color {
+  color: white;
+}
+
+#Register_color {
+  color: white;
+}
+
+/* form.css */
+.btn-primary {
+  background-color: black;
+  border-color: black;
+}
+
+.btn-primary:hover {
+  background-color: #333;
+  border-color: #333;
+}

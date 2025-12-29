@@ -1,0 +1,217 @@
+/* mycartstyle.css */
+
+#empty_style {
+    text-align: center;
+    color: white;
+}
+
+#mycart_style {
+    margin-top: 100px;
+    color: white;
+}
+
+#total_style {
+    color: white;
+}
+
+.list-group-item {
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Transparent black background */
+    color: white;
+    /* Text color */
+    border: 1px solid white;
+    /* White border */
+    margin-bottom: 5px;
+    /* Add some spacing between cart items */
+    transition: background-color 0.3s ease-in-out;
+    /* Add a smooth transition effect for the background color */
+    padding: 10px; /* เพิ่ม padding เพื่อปรับขนาด */
+}
+
+.list-group-item button {
+    background-color: transparent;
+    /* Transparent button background */
+    color: white;
+    /* Button text color */
+    border: 1px solid white;
+    /* White border */
+    transition: background-color 0.3s ease-in-out;
+    /* Add a smooth transition effect for the background color */
+}
+
+.list-group-item button:hover {
+    background-color: rgba(255, 0, 0, 0.2);
+    /* Semi-transparent red background on hover */
+    border: 1px solid #dc3545;
+    /* Red border on hover */
+}
+
+.list-group-item button {
+    background-color: transparent;
+    /* Transparent button background */
+    color: white;
+    /* Button text color */
+    border: 1px solid white;
+    /* White border */
+    transition: background-color 0.3s ease-in-out;
+    /* Add a smooth transition effect for the background color */
+}
+
+.list-group-item button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    /* Semi-transparent white background on hover */
+}
+
+.btn-success {
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Transparent black background */
+    color: white;
+    /* Text color */
+    border: 1px solid #28a745;
+    /* Green border */
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    /* Add smooth transitions for background color and text color */
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    /* Green background on hover */
+    color: white;
+    /* White text color on hover */
+    border: 1px solid #ffffff;
+    /* White border on hover */
+}
+
+.btn-danger {
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Transparent black background */
+    color: white;
+    /* Text color */
+    border: 1px solid #dc3545;
+    /* Red border */
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    /* Add smooth transitions for background color and text color */
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    /* Red background on hover */
+    color: white;
+    /* White text color on hover */
+    border: 1px solid #ffffff;
+    /* White border on hover */
+}
+
+.product-info {
+    display: flex;
+    align-items: center;
+}
+
+.cart-product-image {
+    margin-right: 20px;
+    /* ปรับขนาดรูปภาพให้เหมาะสม */
+    width: 80px; /* เพิ่มขนาดรูปภาพ */
+}
+
+.cart-product-details {
+    display: flex;
+    align-items: center;
+}
+
+.product-details {
+    flex-grow: 1;
+}
+
+        /* The Modal (background) */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+            padding-top: 60px;
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: white;
+            margin: 5% auto 15% auto;
+            /* 5% from the top, 15% from the bottom and centered */
+            border: 1px solid #888;
+            width: 20%;
+            /* Could be more or less, depending on screen size */
+        }
+
+.about-us-content {
+    background-color: rgba(0, 0, 0, 0.8);
+    /* Semi-transparent black background */
+    padding: 10px;
+    /* Reduce padding for spacing */
+    width: 1000px;
+    /* Set width */
+    height: 550px;
+    /* Set height */
+    border-radius: 10px;
+    /* Add border radius for rounded corners */
+    display: flex;
+    /* Use flexbox */
+    flex-direction: column;
+    /* Arrange content in a column */
+    justify-content: center;
+    /* Center content horizontally */
+    align-items: center;
+    /* Center content vertically */
+    border: 2px solid black;
+    /* Add black border */
+    margin: auto;
+    /* Center the element horizontally */
+    margin-top: 6%;
+    position: relative;
+    /* Add position relative */
+}
+
+.about-us-content::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    /* Adjust top position */
+    right: -10px;
+    /* Adjust right position */
+    bottom: -10px;
+    /* Adjust bottom position */
+    left: -10px;
+    /* Adjust left position */
+    border: 2px solid white;
+    border-radius: 12px;
+    /* Match the border radius of the main content */
+    animation: pulse 2s ease-in-out infinite alternate;
+}
+
+/* Style for the text inside about us content */
+.about-us-content p,
+.about-us-content #empty_style,
+.about-us-content #empty_style2 {
+    color: white;
+    /* Set text color */
+    text-align: center;
+    /* Align text center */
+    padding: 5px 20px;
+    /* Adjust padding as needed */
+}
+
+.about-us-content #mycart_style {
+    margin-top: 2%;
+}
